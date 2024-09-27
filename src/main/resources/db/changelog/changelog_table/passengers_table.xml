@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="passenger_table_setup" author="Aleksej">
+        <createTable tableName="passengers">
+            <column name="p_id" type="bigint" autoIncrement="true" />
+            <column name="p_full_name" type="varchar(255)" />
+            <column name="p_email" type="varchar(255)" />
+            <column name="p_phone" type="varchar(20)" />
+            <column name="p_rating" type="real" />
+            <column name="p_deleted" type="boolean" />
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
