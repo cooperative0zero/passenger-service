@@ -14,7 +14,7 @@ public class PassengerRequestToPassenger implements Converter<PassengerRequest, 
                 .id(source.getId())
                 .phone(source.getPhone())
                 .email(source.getEmail())
-                .fmlNames(source.getFmlNames())
+                .fullName(source.getFullName())
                 .isDeleted(source.getIsDeleted())
                 .build();
     }

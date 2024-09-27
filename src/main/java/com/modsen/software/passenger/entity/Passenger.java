@@ -17,8 +17,8 @@ public class Passenger {
     @Column(name = "p_id")
     private Long id;
 
-    @Column(name = "p_fml_names", nullable = false)
-    private String fmlNames;
+    @Column(name = "p_full_name", nullable = false)
+    private String fullName;
 
     @Column(name = "p_email", nullable = false)
     private String email;
@@ -28,4 +28,7 @@ public class Passenger {
 
     @Column(name = "p_deleted", nullable = false)
     private Boolean isDeleted;
+
+    @Column(name = "p_rating")
+    private Float rating;
 }

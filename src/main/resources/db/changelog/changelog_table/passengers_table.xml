@@ -8,9 +8,10 @@
     <changeSet id="passenger_table_setup" author="Aleksej">
         <createTable tableName="passengers">
             <column name="p_id" type="bigint" autoIncrement="true" />
-            <column name="p_fml_names" type="varchar(255)" />
+            <column name="p_full_name" type="varchar(255)" />
             <column name="p_email" type="varchar(255)" />
             <column name="p_phone" type="varchar(20)" />
+            <column name="p_rating" type="real" />
             <column name="p_deleted" type="boolean" />
         </createTable>
     </changeSet>

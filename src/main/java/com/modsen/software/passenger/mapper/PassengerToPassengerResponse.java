@@ -14,7 +14,7 @@ public class PassengerToPassengerResponse implements Converter <Passenger, Passe
                 .id(source.getId())
                 .email(source.getEmail())
                 .phone(source.getPhone())
-                .fmlNames(source.getFmlNames())
+                .fullName(source.getFullName())
                 .isDeleted(source.getIsDeleted())
                 .build();
     }

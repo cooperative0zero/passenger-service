@@ -12,11 +12,13 @@ import lombok.NoArgsConstructor;
 public class PassengerResponse {
     private Long id;
 
-    private String fmlNames;
+    private String fullName;
 
     private String email;
 
     private String phone;
 
     private Boolean isDeleted;
+
+    private Float rating;
 }

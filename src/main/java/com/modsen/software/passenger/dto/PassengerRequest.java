@@ -12,15 +12,19 @@ public class PassengerRequest {
     private Long id;
 
     @NotBlank
-    private String fmlNames;
+    private String fullName;
 
     @Email
+    @NotBlank
     private String email;
 
     @Pattern(regexp = "^\\d{6,}$")
+    @NotBlank
     private String phone;
 
     @NotNull
     private Boolean isDeleted;
+
+    private Float rating;
 }
 

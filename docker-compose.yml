@@ -3,11 +3,13 @@ services:
     image: 'passenger-service:latest'
     build:
       dockerfile: Dockerfile
-    container_name: app
+    container_name: passengers_app
     depends_on:
       - db
+    networks:
+      - microservices-network
     ports:
-      - "8080:8080"
+      - "8081:8081"
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -20,7 +22,13 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - microservices-network
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - /var/lib/docker/volumes/passengers-db:/var/lib/postgresql/data
+
+networks:
+  microservices-network:
+    external: true
