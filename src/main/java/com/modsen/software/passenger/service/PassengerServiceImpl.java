@@ -33,15 +33,17 @@ public class PassengerServiceImpl {
 
     @Transactional
     public Passenger save(Passenger passenger) {
+        Passenger saved;
         if (passenger.getId() != null && passengerRepository.existsById(passenger.getId())) {
             throw new PassengerAlreadyExistsException(String.format("Passenger with id = %d already exists", passenger.getId()));
         } else {
-            passengerRepository.save(passenger);
+            saved = passengerRepository.save(passenger);
         }
 
-        return passenger;
+        return saved;
     }
 
+    @Transactional
     public void softDelete(Long id) {
         if (passengerRepository.softDelete(id) == 0) {
             throw new PassengerNotExistsException(String.format("Passenger with id = %d not exists", id));
