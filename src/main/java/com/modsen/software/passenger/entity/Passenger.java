@@ -10,7 +10,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "passengers")
-@Builder
+@Builder(toBuilder = true)
 public class Passenger {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

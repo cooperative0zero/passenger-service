@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class PassengerServiceImpl {
 
     private final PassengerRepository passengerRepository;
-
 
     @Transactional(readOnly = true)
     public Passenger getById(Long id) {
@@ -37,6 +37,12 @@ public class PassengerServiceImpl {
         if (passenger.getId() != null && passengerRepository.existsById(passenger.getId())) {
             throw new PassengerAlreadyExistsException(String.format("Passenger with id = %d already exists", passenger.getId()));
         } else {
+            if (passengerRepository.existsByEmail(passenger.getEmail()))
+                throw new PassengerAlreadyExistsException(String.format("Passenger with email = %s already exists", passenger.getEmail()));
+
+            if (passengerRepository.existsByPhone(passenger.getPhone()))
+                throw new PassengerAlreadyExistsException(String.format("Passenger with phoneNumber = %s already exists", passenger.getPhone()));
+
             saved = passengerRepository.save(passenger);
         }
 
@@ -54,6 +60,15 @@ public class PassengerServiceImpl {
     public Passenger update(Passenger request) {
         if (!passengerRepository.existsById(request.getId()))
             throw new PassengerNotExistsException(String.format("Passenger with id = %d not exists", request.getId()));
+
+        Optional<Passenger> passengerByEmail = passengerRepository.findByEmail(request.getEmail());
+        Optional<Passenger> passengerByPhone = passengerRepository.findByPhone(request.getPhone());
+
+        if (passengerByEmail.isPresent() && passengerByEmail.get().getId().compareTo(request.getId()) != 0)
+            throw new PassengerAlreadyExistsException(String.format("Passenger with email = %s already exists", request.getEmail()));
+
+        if (passengerByPhone.isPresent() && passengerByPhone.get().getId().compareTo(request.getId()) != 0)
+            throw new PassengerAlreadyExistsException(String.format("Passenger with phoneNumber = %s already exists", request.getPhone()));
 
         return passengerRepository.save(request);
     }

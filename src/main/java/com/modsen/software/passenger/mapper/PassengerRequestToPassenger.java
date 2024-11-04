@@ -16,6 +16,7 @@ public class PassengerRequestToPassenger implements Converter<PassengerRequest, 
                 .email(source.getEmail())
                 .fullName(source.getFullName())
                 .isDeleted(source.getIsDeleted())
+                .rating(source.getRating())
                 .build();
     }
 }

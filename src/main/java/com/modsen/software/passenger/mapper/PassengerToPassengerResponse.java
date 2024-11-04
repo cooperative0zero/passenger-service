@@ -16,6 +16,7 @@ public class PassengerToPassengerResponse implements Converter <Passenger, Passe
                 .phone(source.getPhone())
                 .fullName(source.getFullName())
                 .isDeleted(source.getIsDeleted())
+                .rating(source.getRating())
                 .build();
     }
 }
