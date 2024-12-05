@@ -1,9 +1,9 @@
 package com.modsen.software.passenger.repository;
 
 import com.modsen.software.passenger.entity.Passenger;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.QueryHint;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +14,13 @@ public interface PassengerRepository extends JpaRepository<Passenger, Long> {
 
     boolean existsByEmail(String email);
     boolean existsByPhone(String phone);
+
+    @Lock(LockModeType.PESSIMISTIC_READ)
+    @QueryHints(@QueryHint(name = "jakarta.persistence.lock.timeout", value = "5000"))
     Optional<Passenger> findByEmail(String email);
+
+    @Lock(LockModeType.PESSIMISTIC_READ)
+    @QueryHints(@QueryHint(name = "jakarta.persistence.lock.timeout", value = "5000"))
     Optional<Passenger> findByPhone(String phone);
 
     @Modifying

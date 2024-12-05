@@ -31,4 +31,8 @@ public class Passenger {
 
     @Column(name = "p_rating")
     private Float rating;
+
+    @Version
+    @Column(name = "p_version", nullable = false)
+    private Long version;
 }
