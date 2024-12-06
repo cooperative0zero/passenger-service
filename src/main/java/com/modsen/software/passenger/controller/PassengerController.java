@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Objects;
@@ -36,17 +37,15 @@ public class PassengerController {
             summary = "Get all passengers",
             description = "Allows to get passengers values using pagination."
     )
-    public PaginatedResponse<PassengerResponse> getAll(@RequestParam(required = false, defaultValue = "0") @Min(0) Integer pageNumber,
-                                                        @RequestParam(required = false, defaultValue = "10") @Min(1) Integer pageSize,
-                                                        @RequestParam(required = false, defaultValue = "id") String sortBy,
-                                                        @RequestParam(required = false, defaultValue = "desc") String sortOrder) {
+    public Mono<PaginatedResponse<PassengerResponse>> getAll(@RequestParam(required = false, defaultValue = "0") @Min(0) Integer pageNumber,
+                                                             @RequestParam(required = false, defaultValue = "10") @Min(1) Integer pageSize,
+                                                             @RequestParam(required = false, defaultValue = "p_id") String sortBy,
+                                                             @RequestParam(required = false, defaultValue = "desc") String sortOrder) {
 
-        var result = passengerService.getAll(pageNumber, pageSize, sortBy, sortOrder)
-                .stream()
+        return passengerService.getAll(pageNumber, pageSize, sortBy, sortOrder)
                 .map(passenger -> conversionService.convert(passenger, PassengerResponse.class))
-                .toList();
-
-        return new PaginatedResponse<>(result, pageNumber, pageSize, result.size());
+                .collectList()
+                .map(list -> new PaginatedResponse<>(list, pageNumber, pageSize, list.size()));
     }
 
     @GetMapping("/{id}")
@@ -55,15 +54,16 @@ public class PassengerController {
             summary = "Get passenger by identifier",
             description = "Allows to get passenger by identifier."
     )
-    public PassengerResponse getById(@PathVariable @Min(1) Long id) {
-        return conversionService.convert(passengerService.getById(id), PassengerResponse.class);
+    public Mono<PassengerResponse> getById(@PathVariable @Min(1) Long id) {
+        return passengerService.getById(id)
+                .map(result -> conversionService.convert(result, PassengerResponse.class));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete passenger", description = "Performs soft delete for passenger entity.")
-    public void softDelete(@PathVariable @Min(1) Long id) {
-        passengerService.softDelete(id);
+    public Mono<Void> softDelete(@PathVariable @Min(1) Long id) {
+        return passengerService.softDelete(id);
     }
 
     @PostMapping
@@ -72,9 +72,10 @@ public class PassengerController {
             summary = "Create new passenger",
             description = "Allows to create new passenger."
     )
-    public PassengerResponse save(@RequestBody @Valid PassengerRequest passengerRequest) {
-        return conversionService.convert(passengerService.save(
-                Objects.requireNonNull(conversionService.convert(passengerRequest, Passenger.class))), PassengerResponse.class);
+    public Mono<PassengerResponse> save(@RequestBody @Valid PassengerRequest passengerRequest) {
+        return passengerService.save(
+                Objects.requireNonNull(conversionService.convert(passengerRequest, Passenger.class)))
+                .map(result -> conversionService.convert(result, PassengerResponse.class));
     }
 
     @PutMapping
@@ -83,8 +84,8 @@ public class PassengerController {
             summary = "Update passenger",
             description = "Allows to update passenger."
     )
-    public PassengerResponse update(@RequestBody @Valid PassengerRequest passenger) {
-        return conversionService.convert(passengerService.update(Objects.requireNonNull(conversionService.convert(passenger, Passenger.class))),
-                PassengerResponse.class);
+    public Mono<PassengerResponse> update(@RequestBody @Valid PassengerRequest passenger) {
+        return passengerService.update(Objects.requireNonNull(conversionService.convert(passenger, Passenger.class)))
+                .map(result -> conversionService.convert(result, PassengerResponse.class));
     }
 }

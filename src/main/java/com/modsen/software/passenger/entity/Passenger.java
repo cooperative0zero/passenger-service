@@ -1,7 +1,13 @@
 package com.modsen.software.passenger.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Setter
@@ -14,25 +20,25 @@ import lombok.*;
 public class Passenger {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "p_id")
+    @Column("p_id")
     private Long id;
 
-    @Column(name = "p_full_name", nullable = false)
+    @Column("p_full_name")
     private String fullName;
 
-    @Column(name = "p_email", nullable = false)
+    @Column("p_email")
     private String email;
 
-    @Column(name = "p_phone", nullable = false)
+    @Column("p_phone")
     private String phone;
 
-    @Column(name = "p_deleted", nullable = false)
+    @Column("p_deleted")
     private Boolean isDeleted;
 
-    @Column(name = "p_rating")
+    @Column("p_rating")
     private Float rating;
 
     @Version
-    @Column(name = "p_version", nullable = false)
+    @Column("p_version")
     private Long version;
 }
