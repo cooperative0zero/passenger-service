@@ -1,21 +1,22 @@
 services:
-  app:
+  passenger-service:
     image: 'passenger-service:latest'
     build:
       dockerfile: Dockerfile
     depends_on:
-      - passenger_db
+      - passengerdb-service
     container_name: passenger-service
     networks:
       - microservices-network
     ports:
       - "8081:8080"
+      - "5005:5005"
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
-  passenger_db:
+  passengerdb-service:
     image: postgres:latest
     environment:
       POSTGRES_DB: ${POSTGRES_DB}

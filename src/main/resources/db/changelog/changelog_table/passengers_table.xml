@@ -16,4 +16,10 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="passenger_table_optimistic_locking_setup" author="Aleksej">
+        <addColumn tableName="passengers">
+            <column name="p_version" type="bigint" />
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

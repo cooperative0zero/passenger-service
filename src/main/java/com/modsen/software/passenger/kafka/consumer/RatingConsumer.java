@@ -6,12 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.util.logging.Logger;
+
 @Service
 @RequiredArgsConstructor
 public class RatingConsumer {
 
     @KafkaListener(topics = KafkaTopics.RATING_TOPIC, groupId = "passengerConsumerGroup")
-    public void listenDrivers(BaseRatingEvent driverEvent) {
-        System.out.println(driverEvent);
+    public void listenDrivers(BaseRatingEvent ratingEvent) {
+        Logger.getGlobal().info(ratingEvent.toString());
     }
 }
